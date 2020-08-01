@@ -3,28 +3,62 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"os/exec"
 
-	"howett.net/plist"
+	"github.com/catilac/plistwatch/go-plist"
 )
 
-func main() {
+type dict map[string]interface{}
+
+func getDefaults() (bytes.Buffer, error) {
 	var out bytes.Buffer
 	cmd := exec.Command("defaults", "read")
 	cmd.Env = os.Environ()
 	cmd.Stdout = &out
 	err := cmd.Run()
+	return out, err
+}
 
+func walk(d1 dict) {
+	fmt.Println("WALK")
+	for k, v := range d1 {
+		fmt.Println(k, v)
+		if v, ok := v.(dict); ok {
+			walk(v)
+		}
+	}
+}
+
+func main() {
+	data, err := ioutil.ReadFile("mega.plist")
 	if err != nil {
-		fmt.Println("ERROR", err)
+		fmt.Println(err)
 		return
 	}
 
-	// prints out the output of `defaults read`
-	fmt.Println(out.String())
+	var dict1 dict
+	var dict2 dict
 
-	var dict map[string]interface{}
-	format, err := plist.Unmarshal(out.Bytes(), dict)
-	fmt.Println("DEBUG: ", format, err, dict)
+	format, err := plist.Unmarshal(data, &dict1)
+	fmt.Println("DEBUG: ", format, err, dict1)
+
+	data, err = ioutil.ReadFile("data2.plist")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	format, err = plist.Unmarshal(data, &dict2)
+	fmt.Println("DEBUG: ", format, err, dict2)
+
+	indent, err := plist.MarshalIndent(dict1, 3, "  ")
+	fmt.Println("OK:\n", string(indent))
+
+	// perform dict1 and dict2
+	// we need to identify the domain, and the value changed, and then replace the whole plist, or singular value if it's top level
+
+	walk(dict1)
+
 }
