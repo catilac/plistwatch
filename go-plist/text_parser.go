@@ -307,6 +307,7 @@ func (p *textPlistParser) parseQuotedString() cfString {
 			s += p.emit()
 
 			// we want to check for //"
+			// TODO - fix
 			if p.input[p.pos:p.pos+3] == "\\\\\"" {
 				p.pos = p.pos + 3
 				s += p.emit()
