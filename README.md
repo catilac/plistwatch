@@ -1,1 +1,1 @@
-# to run `go run main.go`
+# watch output of `defaults read`
