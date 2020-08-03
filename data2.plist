@@ -1,25 +1,12 @@
 {
-    "2BUA8C4S2C.com.agilebits.onepassword7-helper" =     {
-        HockeySDKAutomaticallySendCrashReports = 0;
-        HockeySDKCrashReportActivated = 1;
-        MSInstallId = "946A2776-EF01-41C8-BCDB-C61143756505";
-        OPXBrowserRegistrations =         {
-            "D5270576-0D4F-49AB-B184-533CD30D57B9" =             {
-                OPXAuthInfo =                 {
-                    cs = "sygOESllfUQ-yanXXS2Np9BomVauF0Oeh7CCA31pjWU";
-                    method = "auth-sma-hmac256";
-                    secret = "_eN_mg6IfNSPQhUKw1cBMIYTY0a5ixf-hsy-FS_dU5M";
-                };
-                OPXBrowserBundleIdentifier = "com.apple.Safari";
-                OPXBrowserFirstSeen = "2019-12-07 00:08:43 +0000";
-                OPXBrowserLastSeen = "2020-07-20 14:40:01 +0000";
-                OPXBrowserName = Safari;
-                OPXBrowserSignature = "designated => identifier \\"com.apple.Safari\\" and anchor apple\\n";
+    "com.supercatilac.TEST" =     {
+        MYSPECIAL_KEY =         {
+            "EMBED" =             {
+                string = "identifier \\"com.apple.Safari\\" and anchor apple\\n";
             };
         };
-        SessionIdHistory = {length = 452, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 0000014e };
-        UserIdHistory = {length = 447, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 00000149 };
-        pastDevicesKey = {length = 1162, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 00000396 };
+        nonsense = {length = 1162, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 00000396 };
     };
-    whatever = (1, 2, 30);
+    added = { s = "my special value"; };
+    whatever2 = { val = (1, 2, abc); };
 }
