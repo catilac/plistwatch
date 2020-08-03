@@ -82,8 +82,6 @@ func cmp(a interface{}, b interface{}) (*string, bool) {
 				return &k, false
 			}
 		}
-	default:
-		fmt.Println("DEFAULT ERR", valA)
 	}
 
 	return nil, true
