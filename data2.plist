@@ -2,7 +2,7 @@
     "com.supercatilac.TEST" =     {
         MYSPECIAL_KEY =         {
             "EMBED" =             {
-                string = "identifier \\"com.apple.Safari\\" and anchor apple\\n";
+                string = "identifier \\\\ \\"com.apple.Safari\\" and anchor apple\\n";
             };
         };
         nonsense = {length = 1162, bytes = 0x62706c69 73743030 d4010203 04050607 ... 00000000 00000396 };

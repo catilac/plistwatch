@@ -306,12 +306,14 @@ func (p *textPlistParser) parseQuotedString() cfString {
 			slowPath = true
 			s += p.emit()
 
-			// we want to check for //"
-			// TODO - fix
-			if p.input[p.pos:p.pos+3] == "\\\\\"" {
-				p.pos = p.pos + 3
-				s += p.emit()
+			// Escaping a backslash is the only thing that is correctly stored and represented in `defaults`
+			if p.input[p.pos:p.pos+4] == "\\\\\\\\" {
+				p.pos += 4
+				p.ignore()
+				s += "\\"
 			} else {
+				// everything else is incorrectly encoded with one additional backslash \\"
+				p.next() // consume \
 				p.next() // consume \
 				s += p.parseEscape()
 			}
