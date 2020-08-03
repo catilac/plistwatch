@@ -66,8 +66,12 @@ func (p *textPlistGenerator) plistQuotedString(str string) string {
 				s += `\\`
 			case '"':
 				s += `\"`
-			case '\t', '\r', '\n':
-				fallthrough
+			case '\t':
+				s += `\t`
+			case '\r':
+				s += `\r`
+			case '\n':
+				s += `\n`
 			default:
 				s += string(c)
 			}

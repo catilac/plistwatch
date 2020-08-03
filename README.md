@@ -1,7 +1,8 @@
 # watch output of `defaults read`
 
 # TODO
-- [ ] When outputting a `defaults` command, the Marshaled string does not escape newlines and actually prints them out
+- [ ] Diff not working when reading from defaults read
+- [x] When outputting a `defaults` command, the Marshaled string does not escape newlines and actually prints them out
     - Does work when you copy the entire command and run it.
 - [x] Create a loop to poll `defaults read`
 - [ ] Code clean up
