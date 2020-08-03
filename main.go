@@ -3,9 +3,10 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	//"io/ioutil"
 	"os"
 	"os/exec"
+	"time"
 
 	"github.com/catilac/plistwatch/go-plist"
 )
@@ -23,25 +24,23 @@ func main() {
 	var prev map[string]interface{}
 	var curr map[string]interface{}
 
-	data, err := ioutil.ReadFile("data1.plist")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	for {
+		data, err := getDefaults()
+		if _, err = plist.Unmarshal(data.Bytes(), &curr); err != nil {
+			fmt.Println(err)
+			os.Exit(-1)
+		}
 
-	_, err = plist.Unmarshal(data, &prev)
+		if prev != nil {
+			fmt.Println("DIFF")
+			if err = Diff(prev, curr); err != nil {
+				fmt.Println(err)
+				os.Exit(-1)
+			}
+		}
 
-	data, err = ioutil.ReadFile("data2.plist")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+		prev = curr
 
-	_, err = plist.Unmarshal(data, &curr)
-
-	err = Diff(prev, curr)
-	if err != nil {
-		fmt.Errorf("Error: ", err)
-		os.Exit(-1)
+		time.Sleep(1 * time.Second)
 	}
 }
