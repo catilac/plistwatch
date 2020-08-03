@@ -32,7 +32,6 @@ func main() {
 		}
 
 		if prev != nil {
-			fmt.Println("DIFF")
 			if err = Diff(prev, curr); err != nil {
 				fmt.Println(err)
 				os.Exit(-1)
@@ -40,6 +39,7 @@ func main() {
 		}
 
 		prev = curr
+		curr = nil
 
 		time.Sleep(1 * time.Second)
 	}
