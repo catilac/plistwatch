@@ -98,5 +98,4 @@ func marshal(v interface{}) (*string, error) {
 	s := string(bytes)
 
 	return &s, nil
-
 }
