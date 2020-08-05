@@ -12,23 +12,25 @@ func Diff(d1 map[string]interface{}, d2 map[string]interface{}) error {
 	for domain, v2 := range d2 {
 		if v1, ok := d1[domain]; ok {
 			// compare v1 and v2
-			if keyptr, eq := cmp(v1, v2); !eq {
-				if keyptr != nil {
+			prev := v1.(map[string]interface{})
+			curr := v2.(map[string]interface{})
 
-					// if there is a key, we know this is a map[string]interface{}
-					v := v2.(map[string]interface{})
-					s, err := marshal(v[*keyptr])
+			// check for deleted keys
+			for key, _ := range prev {
+				if _, ok := curr[key]; !ok {
+					fmt.Printf("defaults delete \"%s\" \"%s\"\n", domain, key)
+				}
+			}
+
+			for key, currVal := range curr {
+				prevVal, ok := prev[key]
+				if !ok || !cmp(prevVal, currVal) {
+					// add this key
+					s, err := marshal(currVal)
 					if err != nil {
 						return err
 					}
-
-					fmt.Printf("defaults write \"%s\" \"%s\" '%v'\n", domain, *keyptr, *s)
-				} else {
-					s, err := marshal(v2)
-					if err != nil {
-						return err
-					}
-					fmt.Printf("defaults write \"%s\" '%v'\n", domain, *s)
+					fmt.Printf("defaults write \"%s\" \"%s\" '%v'\n", domain, key, *s)
 				}
 			}
 		} else {
@@ -50,41 +52,41 @@ func Diff(d1 map[string]interface{}, d2 map[string]interface{}) error {
 	return nil
 }
 
-func cmp(a interface{}, b interface{}) (*string, bool) {
+func cmp(a interface{}, b interface{}) bool {
 	if reflect.TypeOf(a) != reflect.TypeOf(b) {
-		return nil, false
+		return false
 	}
 
 	switch valA := a.(type) {
 	case string:
-		return nil, a.(string) == b.(string)
+		return a.(string) == b.(string)
 	case int:
-		return nil, a.(int) == b.(int)
+		return a.(int) == b.(int)
 	case []interface{}:
 		valB := b.([]interface{})
 
 		if len(valA) != len(valB) {
-			return nil, false
+			return false
 		}
 		for i := range valA {
-			if key, eq := cmp(valA[i], valB[i]); !eq {
-				return key, false
+			if !cmp(valA[i], valB[i]) {
+				return false
 			}
 		}
 	case map[string]interface{}:
 		valB := b.(map[string]interface{})
 		if len(valA) != len(valB) {
-			return nil, false
+			return false
 		}
 
 		for k := range valA {
-			if _, eq := cmp(valA[k], valB[k]); !eq {
-				return &k, false
+			if !cmp(valA[k], valB[k]) {
+				return false
 			}
 		}
 	}
 
-	return nil, true
+	return true
 }
 
 func marshal(v interface{}) (*string, error) {
