@@ -1,14 +1,23 @@
-# watch output of `defaults read`
+# PlistWatch
 
-# TODO
-- [x] Diff not working when reading from defaults read
-- [x] When outputting a `defaults` command, the Marshaled string does not escape newlines and actually prints them out
-    - Does work when you copy the entire command and run it.
-- [x] Create a loop to poll `defaults read`
+## About
+PlistWatch monitors real-time changes to plist files on your system.
 
-- [ ] Code clean up
-- [ ] Tests
-    - [ ] Test that this works with data
-- [ ] clean up go-plist
-  - [ ] Move into own repo
-  - [ ] Gut excess functionality unnecessary for `defaults`
+## Install
+```
+go get github.com/catilac/plistwatch
+```
+
+## Usage
+Just run:
+```
+plistwatch 
+```
+
+Make some changes such as:
+```
+defaults write "com.apple.dock" "orientation" 'left'
+```
+
+
+
