@@ -21,8 +21,6 @@ You may also see other events being reported.
 
 And you should see output such as:
 ```
-...
 defaults write "com.apple.dock" "orientation" 'left'
-...
 ```
 
