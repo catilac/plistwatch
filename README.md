@@ -6,7 +6,7 @@ It outputs a `defaults` command to recreate that change.
 
 ## Install
 ```
-go get github.com/catilac/plistwatch
+go install github.com/catilac/plistwatch@latest
 ```
 
 ## Usage
