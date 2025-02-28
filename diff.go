@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"reflect"
+	"strings"
+	"os/exec"
 
 	"github.com/catilac/plistwatch/go-plist"
 )
@@ -30,7 +32,30 @@ func Diff(d1 map[string]interface{}, d2 map[string]interface{}) error {
 					if err != nil {
 						return err
 					}
-					fmt.Printf("defaults write \"%s\" \"%s\" '%v'\n", domain, key, *s)
+					
+					out, _ := exec.Command("defaults", "read-type", domain, key).Output()
+					typ := strings.TrimSpace(strings.Replace(string(out), "Type is ", "", -1))
+					
+					value := ""
+					switch typ {
+					case "boolean":
+						if *s == "1" {
+							value = "-bool true"
+						} else {
+							value = "-bool false"
+						}
+						break
+					case "integer":
+					case "float":
+					case "date":
+						value = "-" + typ + " " + *s
+						break
+					// strings, arrays and dicts
+					default:
+						value = "'" + *s + "'"
+						break
+					}
+					fmt.Printf("defaults write \"%s\" \"%s\" %s\n", key, domain, value)
 				}
 			}
 		} else {
