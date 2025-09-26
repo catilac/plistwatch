@@ -24,3 +24,17 @@ And you should see output such as:
 defaults write "com.apple.dock" "orientation" 'left'
 ```
 
+The output can also be filtered:
+```
+Usage of plistwatch:
+  -filter domains
+    	a comma-separated list of domains. Prefix names with "!" to exclude them. Supports globbing.
+```
+
+Examples:
+- Hide annoying settings domains
+`plistwatch -filter "!com.apple.knowledge-agent,!ContextStoreAgent"`
+- Only show changes to the dock
+`plistwatch -filter "com.apple.dock"`
+- Hide every Apple domain
+`plistwatch -filter "!com.apple.*"`
